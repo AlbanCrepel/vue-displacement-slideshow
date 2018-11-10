@@ -10,13 +10,13 @@ var config = {
         loaders: [
             {
                 test: /\.js$/,
-                loader: 'babel',
+                loader: 'babel-loader',
                 include: __dirname,
                 exclude: /node_modules/
             },
             {
                 test: /\.vue$/,
-                loader: 'vue'
+                loader: 'vue-loader'
             },
             {
                 test: /\.css$/,
@@ -42,7 +42,7 @@ var config = {
 
 module.exports = [
     merge(config, {
-        entry: path.resolve(__dirname + './src/plugin.js'),
+        entry: path.resolve(__dirname + '/src/plugin.js'),
         output: {
             filename: 'vue-displacement-slideshow.min.js',
             libraryTarget: 'window',
@@ -50,7 +50,7 @@ module.exports = [
         }
     }),
     merge(config, {
-        entry: path.resolve(__dirname + './src/VueDisplacementSlideshow.vue'),
+        entry: path.resolve(__dirname + '/src/VueDisplacementSlideshow.vue'),
         output: {
             filename: 'vue-displacement-slideshow.js',
             libraryTarget: 'umd',
