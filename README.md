@@ -99,6 +99,12 @@ This component is heavily based on this library :
 |next                     | Transition to the second image. |
 |previous                 | Transition to the first image. |
 
+## Behavior
+
+The first image of the array is displayed at first.
+When we call the `next` method while currently showing the last image, it will go to the first image.
+When we call the `previous` method while currently showing the first image, it will go to the last image.
+
 ## License
 
 MIT
