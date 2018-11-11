@@ -4,7 +4,9 @@
 
 ## Demo
 
-![alt text](./src/assets/demo.gif "Demo gif")
+<p align="center"> 
+    <img src="./src/assets/demo.gif" width="400px" height="auto" alt="Demo gif"/>
+</p>
 
 ## Live demo
 
