@@ -4,7 +4,7 @@
   "description": "A Displacement slideshow VueJs component made with Three.js",
   "author": "AlbanCrepel <alban.crepel@gmail.com>",
   "private": true,
-  "main": "dist/vue-displacement-slideshow.min.js",
+  "main": "dist/vue-displacement-slideshow.js",
   "scripts": {
     "build": "webpack --config ./webpack.config.js"
   },
