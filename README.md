@@ -1,6 +1,6 @@
 # vue-displacement-slideshow
 
-> A Vue.js 2.0 slideshow component working with Three.js
+> A Vue.js 2.0 slideshow component working with Three.js and GSAP
 
 ## Demo
 
