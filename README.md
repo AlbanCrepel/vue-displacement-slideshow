@@ -1,21 +1,20 @@
 # vue-displacement-slideshow
 
-> A Vue.js project
+> A Vue.js 2.0 slideshow component working with Three.js
 
-## Build Setup
+## Demo
 
-``` bash
-# install dependencies
-npm install
+![alt text](./src/assets/demo.gif "Demo gif")
 
-# serve with hot reload at localhost:8080
-npm run dev
+## Live demo
 
-# build for production with minification
-npm run build
+## Installation
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
+#### NPM
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Props
+
+## License
+
+MIT
+
