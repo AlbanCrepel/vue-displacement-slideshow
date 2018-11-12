@@ -60,7 +60,7 @@
             return {
                 currentImage: 0,
                 scene: new Scene(),
-                renderer: new WebGLRenderer({antialias: false}),
+                renderer: new WebGLRenderer({antialias: false, alpha: true}),
                 mat: null,
                 textures: [],
                 disp: null,
