@@ -175,15 +175,20 @@
                 this.loadTextures();
 
                 this.initShaderMaterial();
-
-                window.addEventListener('resize', (e) => {
-                    this.renderer.setSize(this.slider.offsetWidth, this.slider.offsetHeight);
-                });
-            }
+            },
+            onResize() {
+                this.renderer.setSize(this.slider.offsetWidth, this.slider.offsetHeight);
+                this.camera.aspect = window.innerWidth / window.innerHeight;
+                this.camera.updateProjectionMatrix();
+            },
         },
         mounted() {
             this.init();
-        }
+            window.addEventListener('resize', this.onResize);
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.onResize);
+        },
     };
 </script>
 <style scoped>
