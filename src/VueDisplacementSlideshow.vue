@@ -60,7 +60,7 @@
             return {
                 currentImage: 0,
                 scene: new Scene(),
-                renderer: new WebGLRenderer({antialias: false}),
+                renderer: new WebGLRenderer({antialias: false, alpha: true}),
                 mat: null,
                 textures: [],
                 disp: null,
@@ -175,15 +175,20 @@
                 this.loadTextures();
 
                 this.initShaderMaterial();
-
-                window.addEventListener('resize', (e) => {
-                    this.renderer.setSize(this.slider.offsetWidth, this.slider.offsetHeight);
-                });
-            }
+            },
+            onResize() {
+                this.renderer.setSize(this.slider.offsetWidth, this.slider.offsetHeight);
+                this.camera.aspect = window.innerWidth / window.innerHeight;
+                this.camera.updateProjectionMatrix();
+            },
         },
         mounted() {
             this.init();
-        }
+            window.addEventListener('resize', this.onResize);
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.onResize);
+        },
     };
 </script>
 <style scoped>
