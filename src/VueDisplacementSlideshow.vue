@@ -12,7 +12,8 @@
         RepeatWrapping,
         ShaderMaterial,
         PlaneBufferGeometry,
-        Mesh
+        Mesh,
+        Vector2
     } from 'three';
     import {TweenMax, Ease} from "gsap";
 
@@ -64,7 +65,8 @@
                 mat: null,
                 textures: [],
                 disp: null,
-                nextImage: 0
+                nextImage: 0,
+                imagesLoaded: []
             }
         },
         computed: {
@@ -135,11 +137,17 @@
             loadTextures() {
                 const loader = new TextureLoader();
                 loader.crossOrigin = '';
-                this.images.forEach((image) => {
-                    let texture = loader.load(image, this.render);
-                    texture.magFilter = LinearFilter;
-                    texture.minFilter = LinearFilter;
-                    this.textures.push(texture)
+                this.images.forEach((image, index) => {
+                    let textureLoaded = new Promise((resolve, reject) => {
+                        let texture = loader.load(image, () => {
+                            this.render();
+                            resolve();
+                        });
+                        texture.magFilter = LinearFilter;
+                        texture.minFilter = LinearFilter;
+                        this.textures.push(texture)
+                    });
+                    this.imagesLoaded.push(textureLoaded)
                 });
 
                 this.disp = loader.load(this.displacement, this.render);
@@ -157,6 +165,17 @@
                         texture1: {type: 't', value: this.textures[this.currentImage]},
                         texture2: {type: 't', value: this.textures[this.nextImage]},
                         disp: {type: 't', value: this.disp},
+                        resolution: {
+                            type: 'v2',
+                            value: new Vector2(this.slider.offsetWidth, this.slider.offsetHeight),
+                        },
+                        imageResolution: {
+                            type: 'v2',
+                            value: new Vector2(
+                                this.textures[this.currentImage].image.naturalWidth,
+                                this.textures[this.currentImage].image.naturalHeight
+                            ),
+                        }
                     },
 
                     vertexShader: vertex,
@@ -173,13 +192,15 @@
                 this.initScene();
 
                 this.loadTextures();
-
-                this.initShaderMaterial();
+                Promise.all(this.imagesLoaded).then(() => {
+                    this.initShaderMaterial();
+                })
             },
             onResize() {
                 this.renderer.setSize(this.slider.offsetWidth, this.slider.offsetHeight);
                 this.camera.aspect = window.innerWidth / window.innerHeight;
                 this.camera.updateProjectionMatrix();
+                this.mat.uniforms.resolution.value.set(this.slider.offsetWidth, this.slider.offsetHeight);
             },
         },
         mounted() {

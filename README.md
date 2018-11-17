@@ -1,6 +1,6 @@
 # vue-displacement-slideshow
 
-> A Vue.js 2.0 slideshow component working with Three.js and GSAP
+> Webgl image displacement transitions made simple. A Vue.js 2.0 slideshow component working with Three.js and GSAP.
 
 ## Demo
 
@@ -18,18 +18,6 @@ Coming soon
 
 ```bash
  npm i --save vue-displacement-slideshow
- ```
- 
- #### Browser
- 
- Include the script file, then install the component with `Vue.use(VueDisplacementSlideshow);`
- 
- ```html
- <script type="text/javascript" src="node_modules/vuejs/dist/vue.min.js"></script>
- <script type="text/javascript" src="node_modules/vue-displacement-slideshow/dist/vue-displacement-slideshow.min.js"></script>
- <script type="text/javascript">
-   Vue.use(VueDisplacementSlideshow);
- </script>
  ```
 
 ## Example
@@ -104,6 +92,8 @@ This component is heavily based on this library :
 The first image of the array is displayed at first.
 When we call the `next` method while currently showing the last image, it will go to the first image.
 When we call the `previous` method while currently showing the first image, it will go to the last image.
+
+The images are displayed as we would use `background-size:cover` in CSS.
 
 ## License
 

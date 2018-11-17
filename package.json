@@ -1,6 +1,6 @@
 {
   "name": "vue-displacement-slideshow",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A Displacement slideshow VueJs component made with Three.js and GSAP",
   "author": "AlbanCrepel <alban.crepel@gmail.com>",
   "license": "MIT",

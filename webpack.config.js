@@ -42,14 +42,6 @@ var config = {
 
 module.exports = [
     merge(config, {
-        entry: path.resolve(__dirname + '/src/plugin.js'),
-        output: {
-            filename: 'vue-displacement-slideshow.min.js',
-            libraryTarget: 'window',
-            library: 'VueDisplacementSlideshow',
-        }
-    }),
-    merge(config, {
         entry: path.resolve(__dirname + '/src/VueDisplacementSlideshow.vue'),
         output: {
             filename: 'vue-displacement-slideshow.js',
