@@ -205,7 +205,7 @@
                 Promise.all(this.imagesLoaded).then(() => {
                     this.initShaderMaterial();
                     this.$emit("loaded");
-                    this.$forceUpdate();
+                    this.render();
                 })
             },
             onResize() {
