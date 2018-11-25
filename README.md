@@ -87,6 +87,15 @@ This component is heavily based on this library :
 |next                     | Transition to the second image. |
 |previous                 | Transition to the first image. |
 
+
+## Events emitted
+
+| Name                    | Description             |
+|-------------------------|-------------------------|
+|loaded                     | Fired when the component is ready |
+|animationEnd                 | Fired when the transition is done. |
+
+
 ## Behavior
 
 The first image of the array is displayed at first.

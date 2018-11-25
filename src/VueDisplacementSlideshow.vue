@@ -66,7 +66,8 @@
                 textures: [],
                 disp: null,
                 nextImage: 0,
-                imagesLoaded: []
+                imagesLoaded: [],
+                isAnimating : false
             }
         },
         computed: {
@@ -101,7 +102,7 @@
                     value: 1,
                     ease: this.ease,
                     onUpdate: this.render,
-                    onComplete: this.render,
+                    onComplete: this.onAnimationEnd
                 });
             },
             transitionOut() {
@@ -109,8 +110,13 @@
                     value: 0,
                     ease: this.ease,
                     onUpdate: this.render,
-                    onComplete: this.render,
+                    onComplete: this.onAnimationEnd
                 });
+            },
+            onAnimationEnd(){
+                this.isAnimating = false;
+                this.$emit("animationEnd");
+                this.render();
             },
             assignTexturesToMaterial() {
                 this.mat.uniforms.texture1.value = this.textures[this.currentImage];
@@ -121,6 +127,8 @@
                 this.mat.uniforms.dispFactor.value = 0;
             },
             previous() {
+                if(this.isAnimating){ return; }
+                this.isAnimating = true;
                 this.mat.uniforms.dispFactor.value = 1;
                 this.nextImage = (this.currentImage - 1).mod(this.images.length);
                 this.mat.uniforms.texture1.value = this.textures[this.nextImage];
@@ -129,6 +137,8 @@
                 this.currentImage = this.nextImage;
             },
             next() {
+                if(this.isAnimating){ return; }
+                this.isAnimating = true;
                 this.nextImage = (this.currentImage + 1).mod(this.images.length);
                 this.assignTexturesToMaterial();
                 this.transitionIn();
@@ -194,6 +204,8 @@
                 this.loadTextures();
                 Promise.all(this.imagesLoaded).then(() => {
                     this.initShaderMaterial();
+                    this.$emit("loaded");
+                    this.$forceUpdate();
                 })
             },
             onResize() {
