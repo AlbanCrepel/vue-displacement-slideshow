@@ -10,7 +10,7 @@
 
 ## Live demo
 
-Coming soon
+[DEMO](https://vue-displacement-slideshow.now.sh)
 
 ## Installation
 
