@@ -213,6 +213,7 @@
                 this.camera.aspect = window.innerWidth / window.innerHeight;
                 this.camera.updateProjectionMatrix();
                 this.mat.uniforms.resolution.value.set(this.slider.offsetWidth, this.slider.offsetHeight);
+                this.render();
             },
         },
         mounted() {
