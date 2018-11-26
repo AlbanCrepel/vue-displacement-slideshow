@@ -104,6 +104,11 @@ When we call the `previous` method while currently showing the first image, it w
 
 The images are displayed as we would use `background-size:cover` in CSS.
 
+## Contributing 
+
+Contributions are welcome !
+Follow the instructions in the [contributing file](./CONTRIBUTING.md)
+
 ## License
 
 MIT
