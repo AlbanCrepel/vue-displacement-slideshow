@@ -111,5 +111,5 @@ Follow the instructions in the [contributing file](./CONTRIBUTING.md)
 
 ## License
 
-MIT
+[MIT](./LICENCE)
 
