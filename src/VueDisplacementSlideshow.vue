@@ -128,6 +128,12 @@
             },
             previous() {
                 if(this.isAnimating){ return; }
+
+                // Skip animation if the materials are not ready
+                if (this.mat === null) {
+                    this.currentImage = (this.currentImage - 1).mod(this.images.length);
+                    return;
+                }
                 this.isAnimating = true;
                 this.mat.uniforms.dispFactor.value = 1;
                 this.nextImage = (this.currentImage - 1).mod(this.images.length);
@@ -138,6 +144,12 @@
             },
             next() {
                 if(this.isAnimating){ return; }
+
+                // Skip animation if the materials are not ready
+                if (this.mat === null) {
+                    this.currentImage = (this.currentImage + 1).mod(this.images.length);
+                    return;
+                }
                 this.isAnimating = true;
                 this.nextImage = (this.currentImage + 1).mod(this.images.length);
                 this.assignTexturesToMaterial();
