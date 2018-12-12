@@ -67,7 +67,8 @@
                 disp: null,
                 nextImage: 0,
                 imagesLoaded: [],
-                isAnimating : false
+                isAnimating : false,
+                currentTransition : null
             }
         },
         computed: {
@@ -98,20 +99,24 @@
                 this.renderer.render(this.scene, this.camera);
             },
             transitionIn() {
-                TweenMax.to(this.mat.uniforms.dispFactor, this.speedIn, {
+                this.currentTransition = TweenMax.to(this.mat.uniforms.dispFactor, this.speedIn, {
                     value: 1,
                     ease: this.ease,
                     onUpdate: this.render,
-                    onComplete: this.onAnimationEnd
+                    onComplete: this.onAnimationEnd,
+                    paused : true
                 });
+                this.currentTransition.play();
             },
             transitionOut() {
-                TweenMax.to(this.mat.uniforms.dispFactor, this.speedOut, {
+                this.currentTransition = TweenMax.to(this.mat.uniforms.dispFactor, this.speedOut, {
                     value: 0,
                     ease: this.ease,
                     onUpdate: this.render,
-                    onComplete: this.onAnimationEnd
+                    onComplete: this.onAnimationEnd,
+                    paused : true
                 });
+                this.currentTransition.play();
             },
             onAnimationEnd(){
                 this.isAnimating = false;
@@ -128,9 +133,15 @@
             },
             previous() {
                 if(this.isAnimating){ return; }
+
+                // Skip animation if the materials are not ready
+                if (this.mat === null) {
+                    this.currentImage = (this.currentImage - 1).mod(this.textures.length);
+                    return;
+                }
                 this.isAnimating = true;
                 this.mat.uniforms.dispFactor.value = 1;
-                this.nextImage = (this.currentImage - 1).mod(this.images.length);
+                this.nextImage = (this.currentImage - 1).mod(this.textures.length);
                 this.mat.uniforms.texture1.value = this.textures[this.nextImage];
                 this.mat.uniforms.texture2.value = this.textures[this.currentImage];
                 this.transitionOut();
@@ -138,28 +149,26 @@
             },
             next() {
                 if(this.isAnimating){ return; }
+
+                // Skip animation if the materials are not ready
+                if (this.mat === null) {
+                    this.currentImage = (this.currentImage + 1).mod(this.textures.length);
+                    return;
+                }
                 this.isAnimating = true;
-                this.nextImage = (this.currentImage + 1).mod(this.images.length);
+                this.nextImage = (this.currentImage + 1).mod(this.textures.length);
                 this.assignTexturesToMaterial();
                 this.transitionIn();
                 this.resetValuesAfterAnimation();
             },
             loadTextures() {
-                const loader = new TextureLoader();
-                loader.crossOrigin = '';
                 this.images.forEach((image, index) => {
-                    let textureLoaded = new Promise((resolve, reject) => {
-                        let texture = loader.load(image, () => {
-                            this.render();
-                            resolve();
-                        });
-                        texture.magFilter = LinearFilter;
-                        texture.minFilter = LinearFilter;
-                        this.textures.push(texture)
-                    });
+                    let textureLoaded = this.insertImage(image, index);
                     this.imagesLoaded.push(textureLoaded)
                 });
 
+                const loader = new TextureLoader();
+                loader.crossOrigin = '';
                 this.disp = loader.load(this.displacement, this.render);
                 this.disp.wrapS = RepeatWrapping;
                 this.disp.wrapT = RepeatWrapping;
@@ -215,6 +224,34 @@
                 this.mat.uniforms.resolution.value.set(this.slider.offsetWidth, this.slider.offsetHeight);
                 this.render();
             },
+            play(){
+                if(this.currentTransition){
+                    this.currentTransition.play();
+                }
+            },
+            pause(){
+                if(this.currentTransition) {
+                    this.currentTransition.pause();
+                }
+            },
+            insertImage(path, index = this.textures.length) {
+                const loader = new TextureLoader();
+                loader.crossOrigin = '';
+                return new Promise((resolve, reject) => {
+                    let texture = loader.load(path, () => {
+                        this.render();
+                        resolve();
+                    });
+                    texture.magFilter = LinearFilter;
+                    texture.minFilter = LinearFilter;
+                    this.textures.splice(index, 0, texture)
+                });
+            },
+            removeImage(index){
+                if(index !== this.currentImage){
+                    this.textures.splice(index, 1)
+                }
+            }
         },
         mounted() {
             this.init();

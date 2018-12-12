@@ -82,11 +82,14 @@ This component is heavily based on this library :
 
 ## Methods
 
-| Name                    | Description             |
-|-------------------------|-------------------------|
-|next                     | Transition to the second image. |
-|previous                 | Transition to the first image. |
-
+| Name                    | Description             |Params|Returns
+|-------------------------|-------------------------|----------|----------|
+|next                     | Transition to the second image. |      |`void`|
+|previous                 | Transition to the first image. |      |`void`|
+|pause                 | Pause the current transition |     |`void`|
+|play                 | Play the current paused animation |     |`void`|
+|insertImage(path,index)                 | Insert an image at a given index |<ul><li>`path` : the path of the image </li><li>`index` : the index of the inserted image, if not provided, the image will be inserted at the end of the array. It has the same behavior as the `splice` method (negative number allowed)</li></ul>|a Promise resolved when the image is loaded|
+|removeImage(index)                 | Remove an image at a given index |<ul><li>`index` : the index of the image to remove (must be different from the current image index)</li></ul>| `void`|
 
 ## Events emitted
 
