@@ -19,10 +19,7 @@
 
     import {vertex, fragment} from "./shader.js";
 
-    Number.prototype.mod = function (n) {
-        var m = (( this % n) + n) % n;
-        return m < 0 ? m + Math.abs(n) : m;
-    };
+    import { mod } from './utils.js';
 
     export default {
         name: "vue-displacement-slideshow",
@@ -136,12 +133,12 @@
 
                 // Skip animation if the materials are not ready
                 if (this.mat === null) {
-                    this.currentImage = (this.currentImage - 1).mod(this.textures.length);
+                    this.currentImage = mod((this.currentImage - 1), (this.textures.length));
                     return;
                 }
                 this.isAnimating = true;
                 this.mat.uniforms.dispFactor.value = 1;
-                this.nextImage = (this.currentImage - 1).mod(this.textures.length);
+                this.nextImage = mod((this.currentImage - 1), (this.textures.length));
                 this.mat.uniforms.texture1.value = this.textures[this.nextImage];
                 this.mat.uniforms.texture2.value = this.textures[this.currentImage];
                 this.transitionOut();
@@ -152,11 +149,11 @@
 
                 // Skip animation if the materials are not ready
                 if (this.mat === null) {
-                    this.currentImage = (this.currentImage + 1).mod(this.textures.length);
+                    this.currentImage = mod((this.currentImage + 1), (this.textures.length));
                     return;
                 }
                 this.isAnimating = true;
-                this.nextImage = (this.currentImage + 1).mod(this.textures.length);
+                this.nextImage = mod((this.currentImage + 1), (this.textures.length));
                 this.assignTexturesToMaterial();
                 this.transitionIn();
                 this.resetValuesAfterAnimation();
