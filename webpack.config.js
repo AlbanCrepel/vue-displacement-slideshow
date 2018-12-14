@@ -21,7 +21,11 @@ var config = {
             {
                 test: /\.css$/,
                 loader: 'style!less!css'
-            }
+            },
+            {
+                test: [/\.vert$/, /\.frag$/, /\.glsl$/],
+                use: 'raw-loader',
+            },
         ]
     },
     externals: {

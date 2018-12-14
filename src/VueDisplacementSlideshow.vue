@@ -3,23 +3,24 @@
 </template>
 
 <script>
-    import {
-        Scene,
-        WebGLRenderer,
-        OrthographicCamera,
-        TextureLoader,
-        LinearFilter,
-        RepeatWrapping,
-        ShaderMaterial,
-        PlaneBufferGeometry,
-        Mesh,
-        Vector2
-    } from 'three';
-    import {TweenMax, Ease} from "gsap";
+    // Import from source so webpack can do tree shaking
+    import { Scene } from 'three/src/scenes/Scene.js';
+    import { WebGLRenderer } from 'three/src/renderers/WebGLRenderer.js';
+    import { OrthographicCamera } from 'three/src/cameras/OrthographicCamera.js';
+    import { TextureLoader } from 'three/src/loaders/TextureLoader.js';
+    import { LinearFilter } from 'three/src/constants.js';
+    import { RepeatWrapping } from 'three/src/constants.js';
+    import { ShaderMaterial } from 'three/src/materials/ShaderMaterial.js';
+    import { PlaneBufferGeometry } from 'three/src/geometries/PlaneGeometry.js';
+    import { Mesh } from 'three/src/objects/Mesh.js';
+    import { Vector2 } from 'three/src/math/Vector2.js';
 
     import {vertex, fragment} from "./shader.js";
 
     import { mod } from './utils.js';
+
+    import TweenMax from 'gsap/TweenMaxBase';
+    import Easing from 'gsap/EasePack';
 
     export default {
         name: "vue-displacement-slideshow",
