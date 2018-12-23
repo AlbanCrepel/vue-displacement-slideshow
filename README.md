@@ -4,7 +4,7 @@
 
 ## Demo
 
-<p align="center"> 
+<p align="center">
     <img src="./src/assets/demo.gif" width="400px" height="auto" alt="Demo gif"/>
 </p>
 
@@ -24,19 +24,19 @@
 
 ```vue
 <template>
-    <vue-displacement-slideshow 
+    <vue-displacement-slideshow
             :images="images"
             displacement="require('../assets/displacement.png')"
-            :intensity.number="0.2"
-            :speedIn.number="1.4"
-            :speedOut.number="1.4"
+            :intensity="0.2"
+            :speedIn="1.4"
+            :speedOut="1.4"
             ease="Expo.easeInOut"
             ref="slideshow"></vue-displacement-slideshow>
 </template>
-    
+
 <script>
     import VueDisplacementSlideshow from "vue-displacement-slideshow";
-    
+
     export default {
         components: {
             VueDisplacementSlideshow,
@@ -63,7 +63,7 @@
         }
     };
 </script>
-    
+
 ```
 
 This component is heavily based on this library :
@@ -107,7 +107,7 @@ When we call the `previous` method while currently showing the first image, it w
 
 The images are displayed as we would use `background-size:cover` in CSS.
 
-## Contributing 
+## Contributing
 
 Contributions are welcome !
 Follow the instructions in the [contributing file](./CONTRIBUTING.md)
