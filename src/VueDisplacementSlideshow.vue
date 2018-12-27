@@ -20,7 +20,6 @@
     import { mod } from './utils.js';
 
     import TweenMax from 'gsap/TweenMaxBase';
-    import Easing from 'gsap/EasePack';
 
     export default {
         name: "vue-displacement-slideshow",
@@ -235,7 +234,7 @@
             insertImage(path, index = this.textures.length) {
                 const loader = new TextureLoader();
                 loader.crossOrigin = '';
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
                     let texture = loader.load(path, () => {
                         this.render();
                         resolve();
