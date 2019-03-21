@@ -251,7 +251,7 @@
             insertImage(path, index = this.textures.length) {
                 const loader = new TextureLoader();
                 loader.crossOrigin = '';
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
                     let texture = loader.load(path, () => {
                         this.render();
                         resolve();
