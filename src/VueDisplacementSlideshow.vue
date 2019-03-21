@@ -4,23 +4,22 @@
 
 <script>
     // Import from source so webpack can do tree shaking
-    import { Scene } from 'three/src/scenes/Scene.js';
-    import { WebGLRenderer } from 'three/src/renderers/WebGLRenderer.js';
-    import { OrthographicCamera } from 'three/src/cameras/OrthographicCamera.js';
-    import { TextureLoader } from 'three/src/loaders/TextureLoader.js';
-    import { LinearFilter } from 'three/src/constants.js';
-    import { RepeatWrapping } from 'three/src/constants.js';
-    import { ShaderMaterial } from 'three/src/materials/ShaderMaterial.js';
-    import { PlaneBufferGeometry } from 'three/src/geometries/PlaneGeometry.js';
-    import { Mesh } from 'three/src/objects/Mesh.js';
-    import { Vector2 } from 'three/src/math/Vector2.js';
+    import {Scene} from 'three/src/scenes/Scene.js';
+    import {WebGLRenderer} from 'three/src/renderers/WebGLRenderer.js';
+    import {OrthographicCamera} from 'three/src/cameras/OrthographicCamera.js';
+    import {TextureLoader} from 'three/src/loaders/TextureLoader.js';
+    import {LinearFilter} from 'three/src/constants.js';
+    import {RepeatWrapping} from 'three/src/constants.js';
+    import {ShaderMaterial} from 'three/src/materials/ShaderMaterial.js';
+    import {PlaneBufferGeometry} from 'three/src/geometries/PlaneGeometry.js';
+    import {Mesh} from 'three/src/objects/Mesh.js';
+    import {Vector2} from 'three/src/math/Vector2.js';
 
     import {vertex, fragment} from "./shader.js";
 
-    import { mod } from './utils.js';
+    import {mod} from './utils.js';
 
     import TweenMax from 'gsap/TweenMaxBase';
-    import Easing from 'gsap/EasePack';
 
     export default {
         name: "vue-displacement-slideshow",
@@ -53,6 +52,11 @@
                 required: false,
                 type: String,
                 default: "Expo.easeOut"
+            },
+            preserveAspectRatio: {
+                required: false,
+                type: Boolean,
+                default: true
             }
         },
         data() {
@@ -65,8 +69,8 @@
                 disp: null,
                 nextImage: 0,
                 imagesLoaded: [],
-                isAnimating : false,
-                currentTransition : null
+                isAnimating: false,
+                currentTransition: null
             }
         },
         computed: {
@@ -102,7 +106,7 @@
                     ease: this.ease,
                     onUpdate: this.render,
                     onComplete: this.onAnimationEnd,
-                    paused : true
+                    paused: true
                 });
                 this.currentTransition.play();
             },
@@ -112,11 +116,11 @@
                     ease: this.ease,
                     onUpdate: this.render,
                     onComplete: this.onAnimationEnd,
-                    paused : true
+                    paused: true
                 });
                 this.currentTransition.play();
             },
-            onAnimationEnd(){
+            onAnimationEnd() {
                 this.isAnimating = false;
                 this.$emit("animationEnd");
                 this.render();
@@ -130,7 +134,9 @@
                 this.mat.uniforms.dispFactor.value = 0;
             },
             previous() {
-                if(this.isAnimating){ return; }
+                if (this.isAnimating) {
+                    return;
+                }
 
                 // Skip animation if the materials are not ready
                 if (this.mat === null) {
@@ -145,8 +151,10 @@
                 this.transitionOut();
                 this.currentImage = this.nextImage;
             },
-            next() {
-                if(this.isAnimating){ return; }
+            next(nextImage = null) {
+                if (this.isAnimating) {
+                    return;
+                }
 
                 // Skip animation if the materials are not ready
                 if (this.mat === null) {
@@ -154,7 +162,7 @@
                     return;
                 }
                 this.isAnimating = true;
-                this.nextImage = mod((this.currentImage + 1), (this.textures.length));
+                this.nextImage = nextImage !== null ? nextImage : mod((this.currentImage + 1), (this.textures.length));
                 this.assignTexturesToMaterial();
                 this.transitionIn();
                 this.resetValuesAfterAnimation();
@@ -172,6 +180,10 @@
                 this.disp.wrapT = RepeatWrapping;
             },
             initShaderMaterial() {
+                const ratio = {
+                    width: this.preserveAspectRatio ? this.slider.offsetWidth : this.textures[this.currentImage].image.naturalWidth,
+                    height: this.preserveAspectRatio ? this.slider.offsetHeight : this.textures[this.currentImage].image.naturalHeight
+                };
                 this.mat = new ShaderMaterial({
                     uniforms: {
                         intensity1: {type: 'f', value: this.intensity},
@@ -184,7 +196,7 @@
                         disp: {type: 't', value: this.disp},
                         resolution: {
                             type: 'v2',
-                            value: new Vector2(this.slider.offsetWidth, this.slider.offsetHeight),
+                            value: new Vector2(ratio.width, ratio.height),
                         },
                         imageResolution: {
                             type: 'v2',
@@ -201,8 +213,8 @@
                     opacity: 1.0,
                 });
 
-                var geometry = new PlaneBufferGeometry(this.slider.offsetWidth, this.slider.offsetHeight, 1);
-                var object = new Mesh(geometry, this.mat);
+                const geometry = new PlaneBufferGeometry(this.slider.offsetWidth, this.slider.offsetHeight, 1);
+                const object = new Mesh(geometry, this.mat);
                 this.scene.add(object);
             },
             init() {
@@ -216,19 +228,23 @@
                 })
             },
             onResize() {
+                const ratio = {
+                    width: this.preserveAspectRatio ? this.slider.offsetWidth : this.textures[this.currentImage].image.naturalWidth,
+                    height: this.preserveAspectRatio ? this.slider.offsetHeight : this.textures[this.currentImage].image.naturalHeight
+                };
                 this.renderer.setSize(this.slider.offsetWidth, this.slider.offsetHeight);
                 this.camera.aspect = this.slider.innerWidth / this.slider.innerHeight;
                 this.camera.updateProjectionMatrix();
-                this.mat.uniforms.resolution.value.set(this.slider.offsetWidth, this.slider.offsetHeight);
+                this.mat.uniforms.resolution.value.set(ratio.width, ratio.height);
                 this.render();
             },
-            play(){
-                if(this.currentTransition){
+            play() {
+                if (this.currentTransition) {
                     this.currentTransition.play();
                 }
             },
-            pause(){
-                if(this.currentTransition) {
+            pause() {
+                if (this.currentTransition) {
                     this.currentTransition.pause();
                 }
             },
@@ -245,9 +261,14 @@
                     this.textures.splice(index, 0, texture)
                 });
             },
-            removeImage(index){
-                if(index !== this.currentImage){
+            removeImage(index) {
+                if (index !== this.currentImage) {
                     this.textures.splice(index, 1)
+                }
+            },
+            goTo(index){
+                if(index >= 0 && index < this.textures.length) {
+                    this.next(index);
                 }
             }
         },
@@ -260,7 +281,8 @@
         },
     };
 </script>
-<style scoped>
+
+<style>
     .vue-displacement-slideshow {
         width: 100%;
         height: 100%;

@@ -79,6 +79,7 @@ This component is heavily based on this library :
 | speedIn      | Number | The duration of the animation for the next image, in seconds     | false    | 1             |
 | speedOut     | Number | The duration of the animation for the previous image, in seconds | false    | 1             |
 | ease         | String | The GSAP easing to use                                           | false    | Expo.easeOut  |
+| preserveAspectRatio| Boolean| Whether the images keep their aspect ratio (act as `background-size` : `cover` (true) or `contain`  (false)  | false    | true  |
 
 ## Methods
 
@@ -90,6 +91,7 @@ This component is heavily based on this library :
 |play                 | Play the current paused animation |     |`void`|
 |insertImage(path,index)                 | Insert an image at a given index |<ul><li>`path` : the path of the image </li><li>`index` : the index of the inserted image, if not provided, the image will be inserted at the end of the array. It has the same behavior as the `splice` method (negative number allowed)</li></ul>|a Promise resolved when the image is loaded|
 |removeImage(index)                 | Remove an image at a given index |<ul><li>`index` : the index of the image to remove (must be different from the current image index)</li></ul>| `void`|
+|goTo(index)                 | Transition to a given image by its index |<ul><li>`index` : the index of the image to transition to</li></ul>| `void`|
 
 ## Events emitted
 
