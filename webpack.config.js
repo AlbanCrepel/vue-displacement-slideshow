@@ -1,7 +1,6 @@
-const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 var config = {
     output: {
@@ -33,16 +32,7 @@ var config = {
         vue: 'vue'
     },
     plugins: [
-        new UglifyJsPlugin( {
-            uglifyOptions : {
-                minimize : true,
-                sourceMap : false,
-                mangle: true,
-                compress: {
-                    warnings: false
-                }
-            }
-        } )
+        new MinifyPlugin()
     ]
 };
 

@@ -22,6 +22,8 @@
 
 ## Example
 
+**With VueJs 2.0 :**
+
 ```vue
 <template>
     <vue-displacement-slideshow
@@ -64,6 +66,15 @@
     };
 </script>
 
+```
+
+**With Nuxt :**
+
+Just wrap the component between a `no-ssr` tag like so :
+```html
+<no-ssr>
+    <vue-displacement-slideshow />
+</no-ssr>
 ```
 
 This component is heavily based on this library :
