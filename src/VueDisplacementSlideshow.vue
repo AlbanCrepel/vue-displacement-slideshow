@@ -309,9 +309,11 @@
             },
             onMouseMove(e) {
                 if (this.isInteractive && this.mat) {
+                    const sliderPosition = this.$refs.slider.getBoundingClientRect();
+
                     this.position = {
-                        x: e.clientX,
-                        y: e.clientY
+                        x: e.clientX  - sliderPosition.left,
+                        y: e.clientY - sliderPosition.top
                     };
 
                     this.mat.uniforms.u_rgbPosition.value = new Vector2(
