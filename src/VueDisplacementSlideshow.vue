@@ -86,7 +86,6 @@
                 imagesLoaded: [],
                 isAnimating: false,
                 currentTransition: null,
-                interactionVelocity: {},
                 position: {}
             }
         },
@@ -313,11 +312,6 @@
                     this.position = {
                         x: e.clientX,
                         y: e.clientY
-                    };
-
-                    this.interactionVelocity = {
-                        x: 7,
-                        y: 1
                     };
 
                     this.mat.uniforms.u_rgbPosition.value = new Vector2(
