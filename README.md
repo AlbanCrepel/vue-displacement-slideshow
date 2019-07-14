@@ -8,6 +8,8 @@
     <img src="./src/assets/demo.gif" width="400px" height="auto" alt="Demo gif"/>
 </p>
 
+> The canvas can be interactive as well by setting the `isInteractive` props to `true`. See the `props` section to find more.
+
 ## Live demo
 
 [DEMO](https://vue-displacement-slideshow.now.sh)
@@ -91,6 +93,8 @@ This component is heavily based on this library :
 | speedOut     | Number | The duration of the animation for the previous image, in seconds | false    | 1             |
 | ease         | String | The GSAP easing to use                                           | false    | Expo.easeOut  |
 | preserveAspectRatio| Boolean| Whether the images keep their aspect ratio (act as `background-size` : `cover` (true) or `contain`  (false)  | false    | true  |
+| isInteractive| Boolean| Whether the canvas is interactive on mouse move | false    | false  |
+| interactionVelocity| Object| The velocity of the RGB interaction | false    | `{ x : 7, y : 1 }`  |
 
 ## Methods
 

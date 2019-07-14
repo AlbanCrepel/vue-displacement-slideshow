@@ -57,6 +57,21 @@
                 required: false,
                 type: Boolean,
                 default: true
+            },
+            interactionVelocity: {
+                required: false,
+                type: Object,
+                default: () => {
+                    return {
+                        x: 7,
+                        y: 1
+                    }
+                }
+            },
+            isInteractive: {
+                required: false,
+                type: Boolean,
+                default: false
             }
         },
         data() {
@@ -70,7 +85,9 @@
                 nextImage: 0,
                 imagesLoaded: [],
                 isAnimating: false,
-                currentTransition: null
+                currentTransition: null,
+                interactionVelocity: {},
+                position: {}
             }
         },
         computed: {
@@ -204,6 +221,21 @@
                                 this.textures[this.currentImage].image.naturalWidth,
                                 this.textures[this.currentImage].image.naturalHeight
                             ),
+                        },
+                        sliderResolution: {
+                            type: 'v2',
+                            value: new Vector2(
+                                this.slider.offsetWidth,
+                                this.slider.offsetHeight
+                            ),
+                        },
+                        u_rgbPosition: {
+                            type: "v2",
+                            value: new Vector2(window.innerWidth / 2, window.innerHeight / 2)
+                        },
+                        u_rgbVelocity: {
+                            type: "v2",
+                            value: new Vector2(1, 1)
                         }
                     },
 
@@ -236,6 +268,7 @@
                 this.camera.aspect = this.slider.innerWidth / this.slider.innerHeight;
                 this.camera.updateProjectionMatrix();
                 this.mat.uniforms.resolution.value.set(ratio.width, ratio.height);
+                this.mat.uniforms.sliderResolution.value.set(this.slider.offsetWidth, this.slider.offsetHeight);
                 this.render();
             },
             play() {
@@ -266,17 +299,48 @@
                     this.textures.splice(index, 1)
                 }
             },
-            goTo(index){
-                if(index >= 0 && index < this.textures.length) {
+            goTo(index) {
+                if (index >= 0 && index < this.textures.length) {
                     this.next(index);
+                }
+            },
+            animate() {
+                requestAnimationFrame(this.animate);
+                this.render();
+            },
+            onMouseMove(e) {
+                if (this.isInteractive && this.mat) {
+                    this.position = {
+                        x: e.clientX,
+                        y: e.clientY
+                    };
+
+                    this.interactionVelocity = {
+                        x: 7,
+                        y: 1
+                    };
+
+                    this.mat.uniforms.u_rgbPosition.value = new Vector2(
+                        this.position.x,
+                        this.position.y
+                    );
+                    this.mat.uniforms.u_rgbVelocity.value = new Vector2(
+                        this.interactionVelocity.x,
+                        this.interactionVelocity.y
+                    );
                 }
             }
         },
         mounted() {
             this.init();
+
             window.addEventListener('resize', this.onResize);
+            window.addEventListener('mousemove', this.onMouseMove);
+
+            this.animate();
         },
         beforeDestroy() {
+            window.removeEventListener('resize', this.onResize);
             window.removeEventListener('resize', this.onResize);
         },
     };
