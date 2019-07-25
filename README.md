@@ -95,6 +95,7 @@ This component is heavily based on this library :
 | preserveAspectRatio| Boolean| Whether the images keep their aspect ratio (act as `background-size` : `cover` (true) or `contain`  (false)  | false    | true  |
 | isInteractive| Boolean| Whether the canvas is interactive on mouse move | false    | false  |
 | interactionVelocity| Object| The velocity of the RGB interaction | false    | `{ x : 7, y : 1 }`  |
+| angle| Number| The angle of the transition | false    | Math.PI / 4  |
 
 ## Methods
 
