@@ -72,6 +72,11 @@
                 required: false,
                 type: Boolean,
                 default: false
+            },
+            angle: {
+                required: false,
+                type: Number,
+                default: Math.PI / 4
             }
         },
         data() {
@@ -205,8 +210,8 @@
                         intensity1: {type: 'f', value: this.intensity},
                         intensity2: {type: 'f', value: this.intensity},
                         dispFactor: {type: 'f', value: 0.0},
-                        angle1: {type: 'f', value: Math.PI / 4},
-                        angle2: {type: 'f', value: -Math.PI / 4 * 3},
+                        angle1: {type: 'f', value: this.angle},
+                        angle2: {type: 'f', value: this.angle * -1},
                         texture1: {type: 't', value: this.textures[this.currentImage]},
                         texture2: {type: 't', value: this.textures[this.nextImage]},
                         disp: {type: 't', value: this.disp},
