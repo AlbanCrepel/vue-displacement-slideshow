@@ -211,7 +211,7 @@
                         intensity2: {type: 'f', value: this.intensity},
                         dispFactor: {type: 'f', value: 0.0},
                         angle1: {type: 'f', value: this.angle},
-                        angle2: {type: 'f', value: this.angle * -1},
+                        angle2: {type: 'f', value: - Math.PI + this.angle},
                         texture1: {type: 't', value: this.textures[this.currentImage]},
                         texture2: {type: 't', value: this.textures[this.nextImage]},
                         disp: {type: 't', value: this.disp},
