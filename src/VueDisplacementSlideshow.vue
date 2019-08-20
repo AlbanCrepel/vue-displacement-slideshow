@@ -20,6 +20,7 @@
     import {mod} from './utils.js';
 
     import TweenMax from 'gsap/TweenMaxBase';
+    import Ease from 'gsap/EasePack';
 
     export default {
         name: "vue-displacement-slideshow",
