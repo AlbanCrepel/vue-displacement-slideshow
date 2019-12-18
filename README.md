@@ -34,7 +34,7 @@
             :intensity="0.2"
             :speedIn="1.4"
             :speedOut="1.4"
-            ease="Expo.easeInOut"
+            ease="expo.out"
             ref="slideshow"></vue-displacement-slideshow>
 </template>
 
@@ -91,7 +91,7 @@ This component is heavily based on this library :
 | intensity    | Number | The intensity of the displacement                                | false    | 1             |
 | speedIn      | Number | The duration of the animation for the next image, in seconds     | false    | 1             |
 | speedOut     | Number | The duration of the animation for the previous image, in seconds | false    | 1             |
-| ease         | String | The GSAP easing to use                                           | false    | Expo.easeOut  |
+| ease         | String | The GSAP easing to use                                           | false    | expo.out      |
 | preserveAspectRatio| Boolean| Whether the images keep their aspect ratio (act as `background-size` : `cover` (true) or `contain`  (false)  | false    | true  |
 | isInteractive| Boolean| Whether the canvas is interactive on mouse move | false    | false  |
 | interactionVelocity| Object| The velocity of the RGB interaction | false    | `{ x : 7, y : 1 }`  |

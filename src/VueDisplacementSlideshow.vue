@@ -19,8 +19,7 @@
 
     import {mod} from './utils.js';
 
-    import TweenMax from 'gsap/TweenMaxBase';
-    import Ease from 'gsap/EasePack';
+    import {gsap} from 'gsap';
 
     export default {
         name: "vue-displacement-slideshow",
@@ -52,7 +51,7 @@
             ease: {
                 required: false,
                 type: String,
-                default: "Expo.easeOut"
+                default: "expo.out"
             },
             preserveAspectRatio: {
                 required: false,
@@ -92,7 +91,8 @@
                 imagesLoaded: [],
                 isAnimating: false,
                 currentTransition: null,
-                position: {}
+                position: {},
+                rafID: null
             }
         },
         computed: {
@@ -123,7 +123,8 @@
                 this.renderer.render(this.scene, this.camera);
             },
             transitionIn() {
-                this.currentTransition = TweenMax.to(this.mat.uniforms.dispFactor, this.speedIn, {
+                this.currentTransition = gsap.to(this.mat.uniforms.dispFactor, {
+                    duration: this.speedIn,
                     value: 1,
                     ease: this.ease,
                     onUpdate: this.render,
@@ -133,7 +134,8 @@
                 this.currentTransition.play();
             },
             transitionOut() {
-                this.currentTransition = TweenMax.to(this.mat.uniforms.dispFactor, this.speedOut, {
+                this.currentTransition = gsap.to(this.mat.uniforms.dispFactor, {
+                    duration: this.speedOut,
                     value: 0,
                     ease: this.ease,
                     onUpdate: this.render,
@@ -310,7 +312,7 @@
                 }
             },
             animate() {
-                requestAnimationFrame(this.animate);
+                this.rafID = requestAnimationFrame(this.animate);
                 this.render();
             },
             onMouseMove(e) {
@@ -342,8 +344,9 @@
             this.animate();
         },
         beforeDestroy() {
+            cancelAnimationFrame(this.rafID);
             window.removeEventListener('resize', this.onResize);
-            window.removeEventListener('resize', this.onResize);
+            window.removeEventListener('mousemove', this.onMouseMove);
         },
     };
 </script>
