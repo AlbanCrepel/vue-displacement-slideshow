@@ -6,14 +6,14 @@ void main() {
 }
 `;
 
-
 export const fragment = `
 varying vec2 vUv;
-
 uniform float dispFactor;
 uniform sampler2D disp;
 uniform sampler2D texture1;
 uniform sampler2D texture2;
+uniform float texture1Alpha;
+uniform float texture2Alpha;
 uniform float angle1;
 uniform float angle2;
 uniform float intensity1;
@@ -37,18 +37,14 @@ vec2 centeredAspectRatio(vec2 uvs, vec2 factor, vec2 ratio, vec2 distortedPositi
 void main() {
   vec2 normalizedRgbPos = u_rgbPosition / sliderResolution;
   normalizedRgbPos.y = 1. - normalizedRgbPos.y; 
-
   vec2 vel = u_rgbVelocity;
   float dist = distance(normalizedRgbPos + vel / sliderResolution, vUv.xy);
-
   float ratio = clamp(1.0 - dist * 5., 0., 1.);
-
   vec4 tex1 = vec4(1.);
   vec4 tex2 = vec4(1.);
   vec2 u_textureFactor = vec2(1.0);
   vec2 u_texture2Factor = vec2(1.0);
   vec2 uv = vUv; 
-
   vec4 disp = texture2D(disp, vUv);
   vec2 dispVec = vec2(disp.r, disp.g);
   
@@ -62,25 +58,23 @@ void main() {
   
   uv.x -= sin(uv.y) * ratio / 100. * (vel.x + vel.y) / 7.;
   uv.y -= sin(uv.x) * ratio / 100. * (vel.x + vel.y) / 7.;
-
   tex1.r = texture2D(texture1, centeredAspectRatio(uv, u_textureFactor, aspectRatio, distortedPosition1)).r;
   tex2.r = texture2D(texture2, centeredAspectRatio(uv, u_textureFactor, aspectRatio, distortedPosition2)).r;
-
     
   uv.x -= sin(uv.y) * ratio / 150. * (vel.x + vel.y) / 7.;
   uv.y -= sin(uv.x) * ratio / 150. * (vel.x + vel.y) / 7.;
-
   tex1.g = texture2D(texture1, centeredAspectRatio(uv, u_textureFactor, aspectRatio, distortedPosition1)).g;
   tex2.g = texture2D(texture2, centeredAspectRatio(uv, u_textureFactor, aspectRatio, distortedPosition2)).g;
     
   uv.x -= sin(uv.y) * ratio / 300. * (vel.x + vel.y) / 7.;
   uv.y -= sin(uv.x) * ratio / 300. * (vel.x + vel.y) / 7.;
-
   tex1.b = texture2D(texture1, centeredAspectRatio(uv, u_textureFactor, aspectRatio, distortedPosition1)).b;
   tex2.b = texture2D(texture2, centeredAspectRatio(uv, u_textureFactor, aspectRatio, distortedPosition2)).b;
+  
+  tex1.a  = texture1Alpha;
+  tex2.a  = texture2Alpha;
      
   vec4 mixedTextures =  mix(tex1, tex2, dispFactor);
-
   gl_FragColor = mixedTextures;
 }
 `;
