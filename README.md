@@ -94,7 +94,9 @@ This component is heavily based on this library :
 | ease         | String | The GSAP easing to use                                           | false    | expo.out      |
 | preserveAspectRatio| Boolean| Whether the images keep their aspect ratio (act as `background-size` : `cover` (true) or `contain`  (false)  | false    | true  |
 | isInteractive| Boolean| Whether the canvas is interactive on mouse move | false    | false  |
-| interactionVelocity| Object| The velocity of the RGB interaction | false    | `{ x : 7, y : 1 }`  |
+| interactionFactor| Number| The factor of the interaction | false    | `1`  |
+| interactionDuration| Number| The duration of the interaction | false    | `1`  |
+| startAsTransparent| Boolean| Whether the canvas  is initially transparent and the first transition goes to the first picture | false    | `false`  |
 | angle| Number| The angle of the transition | false    | `Math.PI / 4`  |
 
 ## Methods
@@ -106,6 +108,7 @@ This component is heavily based on this library :
 |pause                 | Pause the current transition |     |`void`|
 |play                 | Play the current paused animation |     |`void`|
 |insertImage(path,index)                 | Insert an image at a given index |<ul><li>`path` : the path of the image </li><li>`index` : the index of the inserted image, if not provided, the image will be inserted at the end of the array. It has the same behavior as the `splice` method (negative number allowed)</li></ul>|a Promise resolved when the image is loaded|
+|insertTransparentTexture(index)                 | Insert a transparent texture at a given index |<ul><li>`index` : the index of the inserted image, it has the same behavior as  the `insertImage` `index`  parameter |  `void` |
 |removeImage(index)                 | Remove an image at a given index |<ul><li>`index` : the index of the image to remove (must be different from the current image index)</li></ul>| `void`|
 |goTo(index)                 | Transition to a given image by its index |<ul><li>`index` : the index of the image to transition to</li></ul>| `void`|
 
@@ -124,6 +127,9 @@ When we call the `next` method while currently showing the last image, it will g
 When we call the `previous` method while currently showing the first image, it will go to the last image.
 
 The images are displayed as we would use `background-size:cover` in CSS.
+
+If you set the prop `startAsTransparent` to `true`, then it **adds a texture to your `images` array**. If you want to 
+remove it after, you can just call the `removeImage` method with `0` as the index parameter value.
 
 ## Contributing
 

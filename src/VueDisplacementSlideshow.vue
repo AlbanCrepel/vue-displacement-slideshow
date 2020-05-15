@@ -13,13 +13,13 @@
     import {ShaderMaterial} from 'three/src/materials/ShaderMaterial.js';
     import {PlaneBufferGeometry} from 'three/src/geometries/PlaneGeometry.js';
     import {Mesh} from 'three/src/objects/Mesh.js';
+    import {Texture} from 'three/src/textures/Texture.js';
     import {Vector2} from 'three/src/math/Vector2.js';
 
-    import {vertex, fragment} from "./shader.js";
-
-    import {mod} from './utils.js';
-
     import {gsap} from 'gsap';
+
+    import {vertex, fragment} from "./shader.js";
+    import {mod} from './utils.js';
 
     export default {
         name: "vue-displacement-slideshow",
@@ -58,25 +58,30 @@
                 type: Boolean,
                 default: true
             },
-            interactionVelocity: {
-                required: false,
-                type: Object,
-                default: () => {
-                    return {
-                        x: 7,
-                        y: 1
-                    }
-                }
-            },
             isInteractive: {
                 required: false,
                 type: Boolean,
                 default: false
             },
+            interactionFactor: {
+                required: false,
+                type: Number,
+                default: 1
+            },
+            interactionDuration: {
+                required: false,
+                type: Number,
+                default: 1
+            },
             angle: {
                 required: false,
                 type: Number,
                 default: Math.PI / 4
+            },
+            startAsTransparent: {
+                required: false,
+                type: Boolean,
+                default: false
             }
         },
         data() {
@@ -91,8 +96,11 @@
                 imagesLoaded: [],
                 isAnimating: false,
                 currentTransition: null,
-                position: {},
-                rafID: null
+                mousePosition: {},
+                previousMousePosition: null,
+                rafID: null,
+                mouseSpeed: {value: 0},
+                loaded: false
             }
         },
         computed: {
@@ -132,6 +140,8 @@
                     paused: true
                 });
                 this.currentTransition.play();
+
+                this.setImageResolution(this.speedIn);
             },
             transitionOut() {
                 this.currentTransition = gsap.to(this.mat.uniforms.dispFactor, {
@@ -143,6 +153,16 @@
                     paused: true
                 });
                 this.currentTransition.play();
+
+                this.setImageResolution(this.speedOut);
+            },
+            setImageResolution(duration) {
+                gsap.to(this.mat.uniforms.imageResolution.value, {
+                    duration,
+                    x: this.textures[this.nextImage].image.naturalWidth,
+                    y: this.textures[this.nextImage].image.naturalHeight,
+                    ease: this.ease,
+                });
             },
             onAnimationEnd() {
                 this.isAnimating = false;
@@ -161,7 +181,6 @@
                 if (this.isAnimating) {
                     return;
                 }
-
                 // Skip animation if the materials are not ready
                 if (this.mat === null) {
                     this.currentImage = mod((this.currentImage - 1), (this.textures.length));
@@ -172,6 +191,10 @@
                 this.nextImage = mod((this.currentImage - 1), (this.textures.length));
                 this.mat.uniforms.texture1.value = this.textures[this.nextImage];
                 this.mat.uniforms.texture2.value = this.textures[this.currentImage];
+
+                this.mat.uniforms.texture1Alpha.value = this.textures[this.nextImage].alpha;
+                this.mat.uniforms.texture2Alpha.value = this.textures[this.currentImage].alpha;
+
                 this.transitionOut();
                 this.currentImage = this.nextImage;
             },
@@ -179,7 +202,6 @@
                 if (this.isAnimating) {
                     return;
                 }
-
                 // Skip animation if the materials are not ready
                 if (this.mat === null) {
                     this.currentImage = mod((this.currentImage + 1), (this.textures.length));
@@ -188,6 +210,10 @@
                 this.isAnimating = true;
                 this.nextImage = nextImage !== null ? nextImage : mod((this.currentImage + 1), (this.textures.length));
                 this.assignTexturesToMaterial();
+
+                this.mat.uniforms.texture1Alpha.value = this.textures[this.currentImage].alpha;
+                this.mat.uniforms.texture2Alpha.value = this.textures[this.nextImage].alpha;
+
                 this.transitionIn();
                 this.resetValuesAfterAnimation();
             },
@@ -196,6 +222,10 @@
                     let textureLoaded = this.insertImage(image, index);
                     this.imagesLoaded.push(textureLoaded)
                 });
+
+                if (this.startAsTransparent) {
+                    this.insertTransparentTexture(0);
+                }
 
                 const loader = new TextureLoader();
                 loader.crossOrigin = '';
@@ -214,9 +244,11 @@
                         intensity2: {type: 'f', value: this.intensity},
                         dispFactor: {type: 'f', value: 0.0},
                         angle1: {type: 'f', value: this.angle},
-                        angle2: {type: 'f', value: - Math.PI + this.angle},
+                        angle2: {type: 'f', value: -Math.PI + this.angle},
                         texture1: {type: 't', value: this.textures[this.currentImage]},
                         texture2: {type: 't', value: this.textures[this.nextImage]},
+                        texture1Alpha: {type: 'f', value: this.textures[this.currentImage].alpha},
+                        texture2Alpha: {type: 'f', value: this.textures[this.nextImage].alpha},
                         disp: {type: 't', value: this.disp},
                         resolution: {
                             type: 'v2',
@@ -242,26 +274,24 @@
                         },
                         u_rgbVelocity: {
                             type: "v2",
-                            value: new Vector2(1, 1)
+                            value: new Vector2(0, 0)
                         }
                     },
-
                     vertexShader: vertex,
                     fragmentShader: fragment,
                     transparent: true,
-                    opacity: 1.0,
+                    opacity: 1.0
                 });
-
                 const geometry = new PlaneBufferGeometry(this.slider.offsetWidth, this.slider.offsetHeight, 1);
                 const object = new Mesh(geometry, this.mat);
                 this.scene.add(object);
             },
             init() {
                 this.initScene();
-
                 this.loadTextures();
                 Promise.all(this.imagesLoaded).then(() => {
                     this.initShaderMaterial();
+                    this.loaded = true;
                     this.$emit("loaded");
                     this.render();
                 })
@@ -298,12 +328,31 @@
                     });
                     texture.magFilter = LinearFilter;
                     texture.minFilter = LinearFilter;
-                    this.textures.splice(index, 0, texture)
+                    texture.alpha = 1;
+                    this.textures.splice(index, 0, texture);
+
+                    if (index <= this.currentImage && this.loaded) {
+                        //We change the currentImage only if we loaded all  the images and the action is triggered from  the parent
+                        this.currentImage++;
+                    }
                 });
+            },
+            insertTransparentTexture(index) {
+                const texture = new Texture();
+                texture.image = {
+                    naturalWidth: this.slider.offsetWidth,
+                    naturalHeight: this.slider.offsetHeight
+                };
+                texture.alpha = 0;
+                this.textures.splice(index, 0, texture);
             },
             removeImage(index) {
                 if (index !== this.currentImage) {
-                    this.textures.splice(index, 1)
+                    this.textures.splice(index, 1);
+
+                    if (index < this.currentImage) {
+                        this.currentImage--;
+                    }
                 }
             },
             goTo(index) {
@@ -314,33 +363,46 @@
             animate() {
                 this.rafID = requestAnimationFrame(this.animate);
                 this.render();
+                this.getMouseSpeed();
             },
             onMouseMove(e) {
                 if (this.isInteractive && this.mat) {
                     const sliderPosition = this.$refs.slider.getBoundingClientRect();
-
-                    this.position = {
-                        x: e.clientX  - sliderPosition.left,
+                    this.mousePosition = {
+                        x: e.clientX - sliderPosition.left,
                         y: e.clientY - sliderPosition.top
                     };
-
                     this.mat.uniforms.u_rgbPosition.value = new Vector2(
-                        this.position.x,
-                        this.position.y
-                    );
-                    this.mat.uniforms.u_rgbVelocity.value = new Vector2(
-                        this.interactionVelocity.x,
-                        this.interactionVelocity.y
+                        this.mousePosition.x,
+                        this.mousePosition.y
                     );
                 }
+            },
+            getMouseSpeed() {
+                if (this.mat) {
+                    const speed = Math.sqrt(
+                        (this.previousMousePosition.x - this.mousePosition.x) ** 2 +
+                        (this.previousMousePosition.y - this.mousePosition.y) ** 2
+                    ) || 0;
+
+                    gsap.to(this.mouseSpeed, {
+                        duration: this.interactionDuration,
+                        value: speed,
+                    });
+
+                    this.mat.uniforms.u_rgbVelocity.value = new Vector2(
+                        this.mouseSpeed.value * this.interactionFactor,
+                        this.mouseSpeed.value * this.interactionFactor
+                    );
+                }
+
+                this.previousMousePosition = this.mousePosition;
             }
         },
         mounted() {
             this.init();
-
             window.addEventListener('resize', this.onResize);
             window.addEventListener('mousemove', this.onMouseMove);
-
             this.animate();
         },
         beforeDestroy() {
