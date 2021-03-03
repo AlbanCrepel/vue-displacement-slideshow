@@ -162,6 +162,7 @@
                     x: this.textures[this.nextImage].image.naturalWidth,
                     y: this.textures[this.nextImage].image.naturalHeight,
                     ease: this.ease,
+                    onUpdate: this.render,
                 });
             },
             onAnimationEnd() {
@@ -361,9 +362,12 @@
                 }
             },
             animate() {
-                this.rafID = requestAnimationFrame(this.animate);
+                if (this.isInteractive) {
+                    this.rafID = requestAnimationFrame(this.animate);
+                    this.getMouseSpeed();
+                }
+
                 this.render();
-                this.getMouseSpeed();
             },
             onMouseMove(e) {
                 if (this.isInteractive && this.mat) {
