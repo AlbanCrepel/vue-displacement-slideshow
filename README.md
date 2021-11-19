@@ -150,3 +150,6 @@ Follow the instructions in the [contributing file](./CONTRIBUTING.md)
 
 [MIT](./LICENCE)
 
+## Support
+
+If you find the component useful, you can support my open source work via [my ko-fi page](https://ko-fi.com/alban_crepel).
