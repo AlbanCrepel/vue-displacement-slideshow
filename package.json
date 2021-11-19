@@ -1,51 +1,40 @@
 {
   "name": "vue-displacement-slideshow",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "A Displacement slideshow VueJs component made with Three.js and GSAP",
   "author": "AlbanCrepel <alban.crepel@gmail.com>",
   "license": "MIT",
   "private": false,
-  "main": "dist/vue-displacement-slideshow.js",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/lib/vue-displacement-slideshow.umd.js",
+  "module": "./dist/lib/vue-displacement-slideshow.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/lib/vue-displacement-slideshow.es.js",
+      "require": "./dist/lib/vue-displacement-slideshow.umd.js"
+    }
+  },
   "scripts": {
-    "build": "webpack --config ./webpack.config.js"
+    "dev": "vite",
+    "build": "vite build && vite build --mode=lib",
+    "serve": "vite preview"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/AlbanCrepel/vue-displacement-slideshow.git"
   },
   "dependencies": {
-    "gsap": "^3.0.4",
-    "three": "^0.111.0",
-    "vue": "^2.5.2"
+    "gsap": "^3.8.0",
+    "three": "^0.134.0",
+    "vue": "^3.2.22"
   },
   "devDependencies": {
-    "autoprefixer": "^7.1.2",
-    "babel-core": "^6.22.1",
-    "babel-loader": "^7.1.1",
-    "babel-minify-webpack-plugin": "^0.3.1",
-    "babel-plugin-syntax-jsx": "^6.18.0",
-    "babel-plugin-transform-runtime": "^6.22.0",
-    "babel-plugin-transform-vue-jsx": "^3.5.0",
-    "babel-preset-env": "^1.3.2",
-    "babel-preset-stage-2": "^6.22.0",
-    "css-loader": "^0.28.0",
-    "raw-loader": "^1.0.0",
-    "vue-loader": "^13.3.0",
-    "vue-style-loader": "^3.0.1",
-    "vue-template-compiler": "^2.5.2",
-    "webpack": "^3.6.0",
-    "webpack-cli": "^3.1.2",
-    "webpack-merge": "^4.1.0"
+    "@vitejs/plugin-vue": "^1.9.4",
+    "@vue/compiler-sfc": "^3.2.22",
+    "vite": "^2.6.14"
   },
-  "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
   "keywords": [
     "vue",
     "three",

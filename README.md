@@ -1,11 +1,11 @@
 # vue-displacement-slideshow
 
-> Webgl image displacement transitions made simple. A Vue.js 2.0 slideshow component working with Three.js and GSAP.
+> Webgl image displacement transitions made simple. A Vue.js 3.0 slideshow component working with Three.js and GSAP.
 
 ## Demo
 
 <p align="center">
-    <img src="./src/assets/demo.gif" width="400px" height="auto" alt="Demo gif"/>
+    <img src="lib/assets/demo.gif" width="400px" height="auto" alt="Demo gif"/>
 </p>
 
 > The canvas can be interactive as well by setting the `isInteractive` props to `true`. See the `props` section to find more.
@@ -16,15 +16,24 @@
 
 ## Installation
 
-#### NPM
+```bash
+# using yarn
+ yarn add vue-displacement-slideshow
+ # or using npm
+ npm i vue-displacement-slideshow
+ ```
+
+:warning: If you are using this component with Vue2, you have to use this version: `3.0.1`, as 
+the ones that follow only support Vue3. You can install a particular version like this:
 
 ```bash
- npm i --save vue-displacement-slideshow
+# using yarn
+ yarn add vue-displacement-slideshow@3.0.1
+ # or using npm
+ npm i vue-displacement-slideshow@3.0.1
  ```
 
 ## Example
-
-**With VueJs 2.0 :**
 
 ```vue
 <template>
@@ -35,7 +44,7 @@
             :speedIn="1.4"
             :speedOut="1.4"
             ease="expo.out"
-            ref="slideshow"></vue-displacement-slideshow>
+            ref="slideshow" />
 </template>
 
 <script>
@@ -72,11 +81,11 @@
 
 **With Nuxt :**
 
-Just wrap the component between a `no-ssr` tag like so :
+Just wrap the component in a `client-only` component like so :
 ```html
-<no-ssr>
+<client-only>
     <vue-displacement-slideshow />
-</no-ssr>
+</client-only>
 ```
 
 This component is heavily based on this library :
@@ -86,18 +95,18 @@ This component is heavily based on this library :
 
 | name         |  type  | description                                                      | required | default value |
 |--------------|:------:|------------------------------------------------------------------|----------|---------------|
-| images       | Array  | An array containing the paths of the images you wan to use       | true     | []            |
-| displacement | String | The path of the displacement image                               | true     | none          |
-| intensity    | Number | The intensity of the displacement                                | false    | 1             |
-| speedIn      | Number | The duration of the animation for the next image, in seconds     | false    | 1             |
-| speedOut     | Number | The duration of the animation for the previous image, in seconds | false    | 1             |
-| ease         | String | The GSAP easing to use                                           | false    | expo.out      |
-| preserveAspectRatio| Boolean| Whether the images keep their aspect ratio (act as `background-size` : `cover` (true) or `contain`  (false)  | false    | true  |
-| isInteractive| Boolean| Whether the canvas is interactive on mouse move | false    | false  |
-| interactionFactor| Number| The factor of the interaction | false    | `1`  |
-| interactionDuration| Number| The duration of the interaction | false    | `1`  |
-| startAsTransparent| Boolean| Whether the canvas  is initially transparent and the first transition goes to the first picture | false    | `false`  |
-| angle| Number| The angle of the transition | false    | `Math.PI / 4`  |
+| images       | `Array`  | An array containing the paths of the images you wan to use       | `true`     | `[]`            |
+| displacement | `String` | The path of the displacement image                               | `true`     |           |
+| intensity    | `Number` | The intensity of the displacement                                | `false`    | `1`             |
+| speedIn      | `Number` | The duration of the animation for the next image, in seconds     | `false`    | `1`             |
+| speedOut     | `Number` | The duration of the animation for the previous image, in seconds | `false`    | `1`             |
+| ease         | `String` | The GSAP easing to use                                           | `false`    | `expo.inOut`      |
+| preserveAspectRatio| `Boolean` | Whether the images keep their aspect ratio (act as `background-size` : `cover` (`true`) or `contain`  (`false`)  | `false`    | `true`  |
+| isInteractive| `Boolean`| Whether the canvas is interactive on mouse move | `false`    | `false`  |
+| interactionFactor| `Number` | The factor of the interaction | `false`    | `1`  |
+| interactionDuration| `Number` | The duration of the interaction | `false`    | `1`  |
+| startAsTransparent| `Boolean` | Whether the canvas  is initially transparent and the first transition goes to the first picture | `false`    | `false`  |
+| angle| `Number` | The angle of the transition | `false`    | `Math.PI / 4`  |
 
 ## Methods
 
