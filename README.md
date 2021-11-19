@@ -1,6 +1,7 @@
 # vue-displacement-slideshow
 
-> Webgl image displacement transitions made simple. A Vue.js 3.0 slideshow component working with Three.js and GSAP.
+> Webgl image displacement transitions made simple. A Vue.js slideshow component working with Three.js and GSAP.
+It works with Vue3 and older versions (until 3.0.1) work with Vue2.
 
 ## Demo
 
@@ -18,20 +19,20 @@
 
 ```bash
 # using yarn
- yarn add vue-displacement-slideshow
- # or using npm
- npm i vue-displacement-slideshow
- ```
+yarn add vue-displacement-slideshow
+# or using npm
+npm i vue-displacement-slideshow
+```
 
 :warning: If you are using this component with Vue2, you have to use this version: `3.0.1`, as 
 the ones that follow only support Vue3. You can install a particular version like this:
 
 ```bash
 # using yarn
- yarn add vue-displacement-slideshow@3.0.1
- # or using npm
- npm i vue-displacement-slideshow@3.0.1
- ```
+yarn add vue-displacement-slideshow@3.0.1
+# or using npm
+npm i vue-displacement-slideshow@3.0.1
+```
 
 ## Example
 
