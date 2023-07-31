@@ -1,6 +1,6 @@
 {
   "name": "vue-displacement-slideshow",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A Displacement slideshow VueJs component made with Three.js and GSAP",
   "author": "AlbanCrepel <alban.crepel@gmail.com>",
   "license": "MIT",
@@ -26,14 +26,14 @@
     "url": "https://github.com/AlbanCrepel/vue-displacement-slideshow.git"
   },
   "dependencies": {
-    "gsap": "^3.8.0",
-    "three": "^0.134.0",
-    "vue": "^3.2.22"
+    "gsap": "^3.12.0",
+    "three": "^0.155.0",
+    "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.9.4",
-    "@vue/compiler-sfc": "^3.2.22",
-    "vite": "^2.6.14"
+    "@vitejs/plugin-vue": "^2.3.4",
+    "@vue/compiler-sfc": "^3.3.4",
+    "vite": "^4.4.7"
   },
   "keywords": [
     "vue",

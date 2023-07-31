@@ -11,7 +11,7 @@
 	import {LinearFilter} from 'three/src/constants.js';
 	import {RepeatWrapping} from 'three/src/constants.js';
 	import {ShaderMaterial} from 'three/src/materials/ShaderMaterial.js';
-	import {PlaneBufferGeometry} from 'three/src/geometries/PlaneGeometry.js';
+	import {PlaneGeometry} from 'three/src/geometries/PlaneGeometry.js';
 	import {Mesh} from 'three/src/objects/Mesh.js';
 	import {Texture} from 'three/src/textures/Texture.js';
 	import {Vector2} from 'three/src/math/Vector2.js';
@@ -283,7 +283,7 @@
 					transparent: true,
 					opacity: 1.0
 				});
-				const geometry = new PlaneBufferGeometry(this.slider.offsetWidth, this.slider.offsetHeight, 1);
+				const geometry = new PlaneGeometry(this.slider.offsetWidth, this.slider.offsetHeight, 1);
 				const object = new Mesh(geometry, this.mat);
 				scene.add(object);
 			},
